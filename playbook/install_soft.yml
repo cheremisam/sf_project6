@@ -1,0 +1,28 @@
+- name: "Install and run docker"
+  hosts: app
+  become: true
+  vars_files:
+    - "vars/{{ ansible_os_family|lower }}.yml"
+  tasks:
+  - name: Add Docker repository
+    get_url:
+      url: https://download.docker.com/linux/centos/docker-ce.repo
+      dest: /etc/yum.repos.d/docer-ce.repo
+    when: ansible_facts['os_family'] == "RedHat"
+  - name: Install docker
+    ansible.builtin.package:
+      name: "{{ Docker }}"
+      state: present
+
+  - name: Run docker service
+    ansible.builtin.service:
+      name: docker
+      state: started
+
+- name: "Install and run postgresql-server"
+  hosts: database
+  become: true
+  roles:
+    - role: postgresql
+      postgresql_data_directory: "/var/lib/postgresql/14/test"
+      postgresql_version: "{{ hostvars[inventory_hostname].postgres_version }}"

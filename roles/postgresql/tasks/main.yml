@@ -1,0 +1,16 @@
+---
+# tasks file for roles/postgresql
+- name: Install postgresql-server
+  package:
+    name: postgresql-{{ postgresql_version }}
+    state: present
+- name: Make Data folder
+  file:
+    path: "{{ postgresql_data_directory }}"
+    state: directory
+- name: Set Data folder
+  lineinfile:
+    path: /etc/postgresql/{{ postgres_version }}/main/postgresql.conf
+    regexp: '^data_directory = '
+    line: "data_directory = '{{ postgresql_data_directory }}'"
+  notify: Restart postgresql

@@ -1,0 +1,4 @@
+---
+# defaults file for roles/postgresql
+postgresql_version: "14"
+postgresql_data_directory: "/var/lib/postgresql/14/main"

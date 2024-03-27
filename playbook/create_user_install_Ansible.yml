@@ -1,0 +1,25 @@
+- hosts: all
+  gather_facts: false
+  become: yes
+  roles:
+    - role: users
+      user: "Ansible"
+      group: "adm"
+      key_pub: "files/id_user1.pub"
+
+- hosts: vm1
+  gather_facts: false
+  become: yes
+  tasks:
+  - name: ensure private key present
+    copy: 
+      src: "files/id_user1"
+      dest: "/home/Ansible/.ssh/ansible_key" 
+      owner: Ansible
+      group: adm
+      mode: 0600
+  - name: Install Ansible
+    ansible.builtin.apt:
+      name: "ansible"
+      state: "latest"
+      only_upgrade: false
