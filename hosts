@@ -7,7 +7,7 @@ vm1 ansible_host=178.154.220.216
 
 [database:vars]
 postgres_version = 14
-data = /var/data
+postgresql_data_directory = "/var/lib/postgresql/14/test"
 
 [web]
 vm1 ansible_host=178.154.220.216
